@@ -1,62 +1,39 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar from '../components/Navbar'; // Reuse Navbar component
+import Footer from '../components/Footer'; // Footer component
+import LoginForm from '../components/LoginForm'; // Login form component
 
 export default function Login() {
   return (
-    <>
+    <div className="bg-gray-100 min-h-screen flex flex-col">
+    {/* Navbar */}
     <Navbar />
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-      
-      <div className="bg-white shadow-lg rounded p-6 w-96">
-        <h2 className="text-2xl font-bold mb-6">Log in to My Account</h2>
-        <form>
-          <div className="mb-4">
-            <label className="block text-amexblue mb-2" htmlFor="userID">
-              User ID
-            </label>
-            <input
-              id="userID"
-              type="text"
-              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+    {/* Main Section */}
+    <div className="flex flex-1 justify-center items-center py-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-4">
+        {/* Login Form */}
+        <LoginForm />
+
+        {/* Promotional Banner */}
+        <div className="flex justify-center items-center">
+          <div className="bg-white shadow-md p-6 text-center">
+            <h3 className="text-lg font-semibold mb-4">
+              Presenting the all-new Amex App
+            </h3>
+            <p className="text-blue-600 font-bold text-xl">#DoItEasy</p>
+            <img
+              src="/amex-app-promo.png"
+              alt="Amex App Promo"
+              className="mt-4 mx-auto h-20"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-amexblue mb-2" htmlFor="password">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-amexblue mb-2" htmlFor="accountType">
-              Account Type
-            </label>
-            <select
-              id="accountType"
-              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option>Card - My Account</option>
-              <option>Corporate Account</option>
-            </select>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-900 text-white p-2 rounded hover:bg-blue-800"
-          >
-            Log In
-          </button>
-        </form>
-        <p className="mt-4 text-sm text-gray-600 text-center">
-          Forgot your User ID or Password?{" "}
-          <a href="/" className="text-blue-600">
-            Click here
-          </a>.
-        </p>
+        </div>
       </div>
     </div>
-    </>
-  );
+
+    {/* Footer */}
+    <Footer />
+  </div>
+);
 }
