@@ -1,9 +1,12 @@
 import Link from 'next/link';
+import { useState } from 'react';
 
-export default function Navbar({ userData }) {
+export default function Navbar({ userData = {} }) {
+  const [hovered, setHovered] = useState(null);
+
   return (
-    <nav className="bg-white shadow-md px-6 py-4">
-      <div className="flex justify-between items-center">
+    <nav className="bg-white shadow-md px-6 py-3">
+      <div className="flex justify-center items-center space-x-8">
         {/* Logo */}
         <div className="text-xl font-semibold text-blue-600">
           <Link legacyBehavior href="/">
@@ -17,55 +20,48 @@ export default function Navbar({ userData }) {
           </Link>
         </div>
 
-        {/* Navigation Links - Changes Based on Login State */}
+        {/* Navigation Links */}
         <div className="flex space-x-6">
-          {userData.isLoggedIn ? (
-            <>
-              <Link legacyBehavior href="/my-account">
-                <a className="text-gray-900 font-semibold border-b-2 border-black pb-1">
-                  Home
-                </a>
-              </Link>
-              <Link legacyBehavior href="/statements">
-                <a className="text-gray-700 hover:text-blue-600">Statements & Activity</a>
-              </Link>
-              <Link legacyBehavior href="/payments">
-                <a className="text-gray-700 hover:text-blue-600">Payments</a>
-              </Link>
-              <Link legacyBehavior href="/account-management">
-                <a className="text-gray-700 hover:text-blue-600">Account Management</a>
-              </Link>
-              <Link legacyBehavior href="/rewards">
-                <a className="text-gray-700 hover:text-blue-600">Rewards & Benefits</a>
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link legacyBehavior href="/my-account">
-                <a className="text-gray-700 hover:underline">My Account</a>
-              </Link>
-              <Link legacyBehavior href="/cards">
-                <a className="text-gray-700 hover:underline">Cards</a>
-              </Link>
-              <Link legacyBehavior href="/travel">
-                <a className="text-gray-700 hover:underline">Travel</a>
-              </Link>
-            </>
-          )}
+          {(userData?.isLoggedIn
+            ? [
+                { label: 'Home', path: '/home' },
+                { label: 'Statements & Activity', path: '/statements' },
+                { label: 'Payments', path: '/payments' },
+                { label: 'Account Management', path: '/account-management' },
+                { label: 'Rewards & Benefits', path: '/rewards' },
+              ]
+            : [
+                { label: 'My Account', path: '/my-account' },
+                { label: 'Cards', path: '/cards' },
+                { label: 'Travel', path: '/travel' },
+                { label: 'Insurance', path: '/insurance' },
+                { label: 'Rewards & Benefits', path: '/rewards' },
+                { label: 'Business', path: '/business' },
+              ]
+          ).map((item, index) => (
+            <Link key={index} legacyBehavior href={item.path}>
+              <a
+                className="relative text-gray-700 hover:text-blue-600"
+                onMouseEnter={() => setHovered(index)}
+                onMouseLeave={() => setHovered(null)}
+              >
+                {item.label}
+                {hovered === index && (
+                  <span className="absolute left-0 right-0 -bottom-1 h-1 bg-gray-400"></span>
+                )}
+              </a>
+            </Link>
+          ))}
         </div>
 
-        {/* Right Section - Show Balance & Logout Option */}
+        {/* Right Section */}
         <div className="flex items-center space-x-4">
-          {userData.isLoggedIn ? (
-            <>
-              <button className="text-gray-600">🔍</button>
-              <div className="border px-3 py-1 rounded-md flex items-center space-x-1">
-                <span className="text-gray-700 text-sm">Balance: {userData.balance}</span>
-              </div>
-              <button className="text-blue-600">
-                Log Out
-              </button>
-            </>
+          <button className="text-gray-600">🔍</button>
+          <Link legacyBehavior href="/help">
+            <a className="text-gray-700 hover:text-blue-600">Help</a>
+          </Link>
+          {userData?.isLoggedIn ? (
+            <button className="text-blue-600">Log Out</button>
           ) : (
             <Link legacyBehavior href="/login">
               <a>
