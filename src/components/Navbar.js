@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 
 export default function Navbar({ userData = {} }) {
   const [hovered, setHovered] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const router = useRouter(); // Get current route
 
   useEffect(() => {
     if (userData?.isLoggedIn) {
@@ -15,16 +17,12 @@ export default function Navbar({ userData = {} }) {
 
   if (!userData?.isLoggedIn) {
     return (
-      <nav className="bg-white shadow-md px-6 py-3">
+      <nav className="bg-white shadow-md px-6">
         <div className="flex justify-center items-center space-x-8">
           <div className="text-xl font-semibold text-blue-600">
             <Link legacyBehavior href="/">
               <a>
-                <img
-                  src="/american-express-logo.png"
-                  alt="American Express"
-                  className="h-6"
-                />
+                <img src="/american-express-logo.png" alt="American Express" className="h-6" />
               </a>
             </Link>
           </div>
@@ -39,14 +37,15 @@ export default function Navbar({ userData = {} }) {
             ].map((item, index) => (
               <Link key={index} legacyBehavior href={item.path}>
                 <a
-                  className="relative text-gray-700 hover:text-blue-600"
+                  className={`relative py-2 ${
+                    router.pathname === item.path
+                      ? 'text-black border-b-4 border-blue-700 font-semibold'
+                      : 'text-gray-700 hover:text-blue-600'
+                  }`}
                   onMouseEnter={() => setHovered(index)}
                   onMouseLeave={() => setHovered(null)}
                 >
                   {item.label}
-                  {hovered === index && (
-                    <span className="absolute left-0 right-0 -bottom-1 h-1 bg-gray-400"></span>
-                  )}
                 </a>
               </Link>
             ))}
@@ -83,11 +82,7 @@ export default function Navbar({ userData = {} }) {
         <div className="text-xl font-semibold text-blue-600">
           <Link legacyBehavior href="/">
             <a>
-              <img
-                src="/american-express-logo.png"
-                alt="American Express"
-                className="h-6"
-              />
+              <img src="/american-express-logo.png" alt="American Express" className="h-6" />
             </a>
           </Link>
         </div>
@@ -96,22 +91,29 @@ export default function Navbar({ userData = {} }) {
           <button className="text-blue-600">Log Out</button>
         </div>
       </div>
-      <div className="flex items-center bg-white p-3 border-t border-gray-300">
+      <div className="flex items-center bg-white pt-3 border-t border-gray-300">
         <img src="/credit-card-icon.png" alt="Card" className="h-10" />
         <div className="ml-3">
           <p className="text-gray-800 font-semibold">Cash Magnet® Card</p>
-          <p className="text-gray-600 text-sm flex items-center">•••• 12005 <span className="ml-1 text-lg">⌄</span></p>
         </div>
         <div className="flex-grow border-l border-gray-300 ml-6 pl-6 flex space-x-6">
           {[
-            { label: 'Home', path: '/home' },
+            { label: 'Home', path: '/myaccount' },
             { label: 'Statements & Activity', path: '/statements' },
             { label: 'Payments', path: '/payments' },
             { label: 'Account Management', path: '/account-management' },
             { label: 'Rewards & Benefits', path: '/rewards' },
           ].map((item, index) => (
             <Link key={index} legacyBehavior href={item.path}>
-              <a className="text-gray-700 hover:text-blue-600 py-1">{item.label}</a>
+              <a
+                className={`py-1 ${
+                  router.pathname === item.path
+                    ? 'text-black border-b-4 border-blue-700 font-semibold'
+                    : 'text-gray-700 hover:text-blue-600'
+                }`}
+              >
+                {item.label}
+              </a>
             </Link>
           ))}
         </div>
